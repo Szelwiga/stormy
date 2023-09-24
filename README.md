@@ -5,13 +5,13 @@
 #### Doesn't require static IP!
 
 #### Stormy git contains following subsections:
-* Stormy cli -- Command line tool used as overlay for API, written in bash + python for API requests
-* Stormy API -- Online drive API written in nodejs
-* Stormy linker -- Small static website that redirects to changed ip
-* Stormy update_ip -- Systemd daemon + script that notify about ip changes
-> Stormy online -- Planned to make online version to browse uploaded files in web
+* Stormy CLI - Command line tool used as overlay for API, written in bash + python for API requests
+* Stormy API - Online drive API written in nodejs
+* Stormy linker - Small static website that redirects to changed ip
+* Stormy update_ip - Systemd daemon + script that notify about ip changes
+> Stormy online - Planned to make online version to browse uploaded files in web
 
-### Stormy cli
+### Stormy CLI
 
 Some of the features:
 ```
@@ -29,5 +29,26 @@ Installation:
 ### Stormy API
 
 ```
-
+	node add_user --email a@b.com --name user --pass pass # Creates new user
+	node API.js # runs API
 ```
+Installation:
+* Set up config file
+* Create daemon with ```stormy_api.service```
+* Or just run with ```node API.js```
+
+### Stormy Linker:
+Page that redirects to current API ip, with script that updates this ip (in case of github pages hosting).
+
+### Stormy update_ip
+
+Script with daemon that changes IP
+
+Installation:
+* Set up ```sendip.js``` with email account that will notify you about ip change
+* Set proper paths in ```ip_update``` script including path to linker to automatily push changes to linker
+* Create daemon with ```update_ip.service```
+
+### Planned TODO:
+* Create stormy online and beautify linker
+* Documentation for API
