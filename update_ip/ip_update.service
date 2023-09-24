@@ -1,0 +1,12 @@
+[Unit]
+Description=Ip Update
+
+[Service]
+Type=simple
+User=ramzel
+ExecStart=/path/to/ip/update/ip_update /* set it up and remove this comment */
+Restart=always
+RuntimeMaxSec=1h
+
+[Install]
+WantedBy=default.target

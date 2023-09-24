@@ -1,0 +1,36 @@
+#!/bin/bash
+ip_update_path="/path/to/ip/update/" # set it up
+linker_path="/path/to/linker/" # set it up
+function print_log(){
+	date +%Y-%m-%d%n%H:%M:%S
+	date +%Y-%m-%d%n%H:%M:%S >> ${ip_update_path}log
+
+	echo "$1"
+	echo "$1" >> ${ip_update_path}log
+
+	echo ""
+	echo "" >> ${ip_update_path}log
+}
+while true;
+do
+	IP_OLD=$(cat ${ip_update_path}IP)
+	IP=$(${ip_update_path}ip_checker.py)
+	if [ "$IP" == "fail" ]; then
+		print_log "Ip checker function failed"
+	else
+		if [ "$IP_OLD" == "$IP" ]; then
+			print_log "IP did not change at all"
+		else
+			${linker_path}upd $IP
+			MAIL_STATUS=$(node ${ip_update_path}sendip.js $IP 2>> ${ip_update_path}log)
+			if [ "$MAIL_STATUS" != "OK" ]; then
+				print_log "^Above log is ipsend.js log."
+			else
+				print_log "Send email succesfully"
+				echo $IP > ${ip_update_path}IP
+			fi
+		fi
+	fi
+	sleep 360
+done
+
