@@ -29,13 +29,13 @@ Installation:
 ### Stormy API
 
 ```
-	node add_user --email a@b.com --name user --pass pass # Creates new user
+	node add_user.js --email a@b.com --name user --pass pass # Creates new user
 	node API.js # runs API
 ```
 Installation:
-* Set up config file
-* Create daemon with ```stormy_api.service```
-* Or just run with ```node API.js```
+* Set up ```config.js``` file
+* Create proper directories using ```./make_dirs.sh``` script
+* Create daemon with ```stormy_api.service``` or run with ```node API.js```
 
 ### Stormy Linker:
 Page that redirects to current API ip, with script that updates this ip (in case of github pages hosting).
