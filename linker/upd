@@ -1,0 +1,7 @@
+#!/bin/bash
+path="/path/to/linker"
+cd $path
+echo ip='"'$1'"' > a.js
+git add a.js
+git commit -m "Auto update"
+git push
