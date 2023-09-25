@@ -1,0 +1,12 @@
+[Unit]
+Description=Stormy API
+
+[Service]
+Type=simple
+User=ramzel
+WorkingDirectory=/path/to/API.js
+ExecStart=node API.js
+Restart=always
+
+[Install]
+WantedBy=default.target
