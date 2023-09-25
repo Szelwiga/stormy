@@ -1,0 +1,208 @@
+args=$(getopt -o n:uvsfelad:h -l link,onetimelink,autoencrypt,encrypt,long,smart,name:,dir:,simple,remove,removedir,removeall,list,help,force,unzip,desc:,version -- "$@")
+
+function clear_eating(){
+	eat_desc_option="0"
+	eat_package_name_option="0"
+	eat_dir_option="0"
+}
+for i in $args
+do
+	if [ "$i" == "--" ]; then
+		clear_eating
+		continue;
+	fi
+
+	if [ "$i" == "-n" ] || [ "$i" == "--name" ]; then
+		if [ "$name_flag" == "1" ]; then
+			echo "Using name option two times is forbidden."
+			exit 1
+		else
+			clear_eating
+			eat_package_name_option="1"
+			continue
+		fi
+	fi
+
+	if [ "$i" == "--desc" ]; then
+		if [ "$desc_flag" == "1" ]; then
+			echo "Using description option two times is forbidden."
+			exit 1
+		else
+			clear_eating
+			eat_desc_option="1"
+			continue
+		fi
+	fi
+	
+	if [ "$i" == "-d" ] || [ "$i" == "--dir" ]; then
+		if [ "$dir_flag" == "1" ]; then
+			echo "Using description option two times is forbidden."
+			exit 1
+		else
+			clear_eating
+			dir_flag="1"
+			eat_dir_option="1"
+			continue
+		fi
+	fi
+
+	if [ "$i" == "-v" ] || [ "$i" == "--version" ]; then
+		version_flag="1"
+		clear_eating
+		continue
+	fi
+		
+	if [ "$i" == "-h" ] || [ "$i" == "--help" ]; then
+		help_flag="1"
+		clear_eating
+		continue
+	fi
+
+	if [ "$i" == "-f" ] || [ "$i" == "--force" ]; then
+		force_flag="1"
+		clear_eating
+		continue
+	fi
+
+	if [ "$i" == "-u" ] || [ "$i" == "--unzip" ]; then
+		unzip_flag="1"
+		clear_eating
+		continue
+	fi
+
+	if [ "$i" == "-s" ] || [ "$i" == "--simple" ]; then
+		simple_flag="1"
+		clear_eating
+		continue
+	fi
+
+	if [ "$i" == "-a" ] || [ "$i" == "--autoencrypt" ]; then
+		autoencrypt_flag="1"
+		clear_eating
+		continue
+	fi
+
+	if [ "$i" == "-e" ] || [ "$i" == "--encrypt" ]; then
+		encrypt_flag="1"
+		clear_eating
+		continue
+	fi
+
+	if [ "$i" == "-l" ] || [ "$i" == "--link" ]; then
+		link_flag="1"
+		clear_eating
+		continue
+	fi
+
+	if [ "$i" == "--onetimelink" ]; then
+		otl_flag="1"
+		clear_eating
+		continue
+	fi
+
+	if [ "$i" == "--long" ]; then
+		long_flag="1"
+		clear_eating
+		continue
+	fi
+
+	if [ "$i" == "--list" ]; then
+		list_flag="1"
+		clear_eating
+		continue
+	fi
+
+	if [ "$i" == "--smart" ]; then
+		smart_flag="1"
+		clear_eating
+		continue
+	fi
+
+		if [ "$i" == "--remove" ]; then
+		remove_flag="1"
+		clear_eating
+		continue
+	fi
+
+	if [ "$i" == "--removeall" ]; then
+		removeall_flag="1"
+		clear_eating
+		continue
+	fi
+
+	if [ "$i" == "--removedir" ]; then
+		removedir_flag="1"
+		clear_eating
+		continue
+	fi
+
+	if [ "$eat_package_name_option" == "1" ]; then
+		if [ "$name_flag" == "1" ]; then
+			package_name_option=${package_name_option}_space_$(echo $i | sed "s/^'//" | sed "s/'$//")
+		else
+			package_name_option=$(echo $i | sed "s/^'//" | sed "s/'$//")
+			name_flag="1"
+		fi
+		continue
+	fi
+
+	if [ "$eat_desc_option" == "1" ]; then
+		if [ "$desc_flag" == "1" ]; then
+			desc_option=${desc_option}_space_$(echo $i | sed "s/^'//" | sed "s/'$//")
+		else
+			desc_flag="1"
+			desc_option=$(echo $i | sed "s/^'//" | sed "s/'$//")
+		fi
+		continue
+	fi
+
+	if [ "$eat_dir_option" == "1" ]; then
+		dir_option=$(echo $i | sed "s/^'//" | sed "s/'$//")
+		clear_eating
+		continue
+	fi
+
+	if [ "$have_command" == "0" ]; then
+		have_command="1"
+		command=$i
+		continue
+	fi
+	((arguments_count++))
+	arguments[arguments_count]=$(echo $i | sed "s/^'//" | sed "s/'$//")
+done
+
+function dbg_options(){
+	echo "--------- DBG ---------"
+	echo "One time link: $otl_flag"
+	echo "Version:       $version_flag"	
+	echo "Link:          $link_flag"	
+	echo "Encrypt:       $encrypt_flag"	
+	echo "Autoencrypt:   $autoencrypt_flag"	
+	echo "Help:          $help_flag"	
+	echo "Desc:          $desc_flag"	
+	echo "Force:         $force_flag"	
+	echo "Name:          $name_flag"	
+	echo "Long:          $long_flag"	
+	echo "List:          $list_flag"	
+	echo "Smart:         $smart_flag"	
+	echo "Unzip:         $unzip_flag"	
+	echo "Dir:           $dir_flag"	
+	echo "Simple:        $simple_flag"
+	echo "Remove:        $remove_flag"
+	echo "Removeall:     $removeall_flag"
+	echo "Removedir:     $removedir_flag"
+	echo ""
+	echo "Have Command:  $have_command"
+	echo "Command:       $command"
+	echo ""
+	echo "Name option:   $package_name_option"	
+	echo "Desc option:   $desc_option"	
+	echo "Dir option:    $dir_option"	
+	echo ""
+	echo "Others (${arguments_count}):"
+	for i in ${arguments[@]}
+	do
+		echo $i
+	done
+	echo "--------- DBG ---------"
+}

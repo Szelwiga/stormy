@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#cli settings
+
+autoencrypt="0"
+autoencrypt_pass="your-pass"
+unzip_default="0"
+unzip_ask_default="1"
+use_scp_instead_of_api="0"
+use_smart_search="1"
+show_md5_for_packages="1"
+
+# CONNECTION SETTINGS #
+# copy connection settings from stormy online #
+
+#personal config
+token="token"
+dir="your-storage"
+user="user"
+
+#scp config
+stormy_server_user="user"
+stormy_server_scp_port="ssh_port"
+stormy_server_directory="/path/to/stormy/on/server/"
+
+#api config
+ip_provider="link_to_linker"
+stormy_server_api_port="api_port"
+stormy_server_ip="0.0.0.0"

@@ -1,0 +1,260 @@
+.\" Manpage for ascify.
+.TH man 1 "23 Sep 2023" "1.0" "Stormy man page"
+.SH NAME
+\fBstormy\fR \- command line tool to use stormy api, allows to fast upload files to stormy server, download and link them. 
+.SH DESCRIPTION
+Stormy is command line tool to use stormy api, it supports 7 basic commands:
+
+    \fBupload\fR    \- uploads files to stormy server.
+    \fBdownload\fR  \- downloads files from stormy server.
+    \fBmkdir\fR     \- creates directories on stormy server.
+    \fBls\fR        \- lists files uploaded to stormy server.
+    \fBremove\fR    \- removes files from stormy server.
+    \fBlink\fR      \- creates download link for uploaded files.
+    \fBstat\fR      \- prints info about file on stormy server.
+  
+Other commands, are: \fBhelp\fR, \fBversion\fR, \fBupdate_ip\fR and \fBapi_status\fR. Command \fBupdate_ip\fR updates stormy server ip in config, use this command when not being able to connect to server to make api calls. Command \fBapi_status\fR checks whether server is down. This message can be printed using \fBhelp\fR command. Version can be printed using \fB-v\fR or \fB--version\fR flag or \fBversion\fR command.
+To print help for specified command use \fB--help\fR option, for example:
+
+.BI stormy\ upload\ --help
+.SH SYNOPSIS
+\fBstormy\fR [command] [options] [argument]
+.SH DESCRIPTION [upload]
+\fBupload\fR command uploads given files to server.
+.SH OPTIONS [upload]
+.TP
+\fB\-n=\fI\,name\/\fR, \fB\-\-name\fR=\fI\,name\/\fR
+specify package name
+.TP
+\fB\-s\fR, \fB\-\-simple\fR
+when used the files are not compressed and uploaded as simple files
+.TP
+\fB\-a\fR, \fB\-\-autoencrypt\fR
+autoencrypts uploaded package with password in config
+.TP
+\fB\-e\fR, \fB\-\-encrypt\fR
+asks for password, with that password uploaded package will be encrypted
+.TP
+\fB\-l\fR, \fB\-\-link\fR
+creates link for uploaded files
+.TP
+\fB\-\-onetimelink\fR
+makes link one time use
+.TP
+\fB\-\-desc\fR=\fI\,'description for uploaded files'\/\fR
+add optional description for uploaded files/packages
+.TP
+\fB\-f\fR, \fB\-\-force\fR
+doesn't ask when overwriting existing files in stormy
+.TP
+\fB\-d=\fI\,name\/\fR, \fB\-\-dir\fR=\fI\,name\/\fR
+select target location on server
+.SH CONFIG [upload]
+.br
+\fBautoencrypt\fR when toggled on always autoencrypt files
+.br
+\fBautoencrypt_pass\fR specify autoencryption password
+.br
+\fBuse_scp_instead_of_api\fR when toogled on files are uploaded with scp instead of https api (ssh acces is necessary)
+.br
+\fBshow_md5_for_packages\fR when toogled on shows md5sum for uploaded files locally and on server
+.SH EXAMPLES [upload]
+.BI stormy\ upload\ --name\ \fIname1\fR\ --desc\ \fI'Example\ upload'\fR\ --dir\ \fIdir2\ file1\ file2\ directory1\fR
+.br
+Above command will create zip package with \fIfile1\fR, \fIfile2\fR and content of \fIdirectory1\fR, and upload it as package named \fIname1\fR with description \fIexample upload\fR, the file will be located in \fIdir2\fR directory on stormy.
+
+.BI stormy\ upload\ -s\ \fIfile1\ file2\fR
+.br
+Above command will upload \fIfile1\fR and \fIfile2\fR to stormy (without zipping), and store them in directory / on stormy.
+.SH DESCRIPTION [download]
+\fBdownload\fR command downloads files or packages from server.
+.SH OPTIONS [download]
+.TP
+\fB\-n=\fI\,name\/\fR, \fB\-\-name\fR=\fI\,name\/\fR
+specify package name
+.TP
+\fB\-d=\fI\,name\/\fR, \fB\-\-dir\fR=\fI\,name\/\fR
+select target location on server
+.TP
+\fB\-\-desc\fR=\fI\,name\/\fR
+specifies local target location
+.TP
+\fB\-u\fR, \fB\-\-unzip\fR
+automaticly decompress packages after downloading them
+.TP
+\fB\-\-smart\fR
+smart search scraps dir from file name, for example /abc/xyz/a.cpp is splitted into /abc/xyz/ directory and a.cpp filename
+.SH CONFIG [download]
+.br
+\fBuse_smart_search\fR always toggle on smart flag
+.br
+\fBunzip_default when\fR toogled on automaticly unzips downloaded packages
+.br
+\fBunzip_ask_default\fR when toogled on creates asking prompt that determines whether package should be decompressed or not
+.SH EXAMPLES [download]
+.BI stormy\ download\ --name\ \fIname1\fR\ --dir\ \fIdir1\fR
+.br
+Above command downloads file/package \fIname1\fR located at \fIdir1\fR on server.
+
+.BI stormy\ download\ --smart\ --desc\ \fIdir2\fR\ \fI/dir1/name1\fR
+.br
+Above command downloads file/package \fIname1\fR located at \fIdir1\fR on server and stores it in \fIdir2/\fR.
+
+.BI stormy\ download\ --smart\ \fI/dir1/dir2/name1\ name2\ dir3/name3\fR
+.br
+Above command downloads specified files \fI/name2\fR, \fI/dir1/dir2/name1\fR and \fI/dir3/name3\fR from stormy.
+
+.SH DESCRIPTION [mkdir]
+\fBmkdir\fR command creates directorires on server.
+.SH OPTIONS [mkdir]
+.TP
+\fB\-d=\fI\,name\/\fR, \fB\-\-dir\fR=\fI\,name\/\fR
+select target location on server
+.SH EXAMPLES [mkdir]
+.BI stormy\ mkdir\ \fIdir1\fR\ \fI/dir2/dir3\fR \fIdir2/dir4/\fR
+.br
+Above command creates directories \fI/dir1\fR, \fI/dir2/dir3\fR and \fI/dir2/dir4\fR on stormy.
+
+.BI stormy/ mkdir/ -d /fIdir5/fR
+.br
+Above command creates directory /fI/dir5/fR on stormy.
+
+.SH DESCRIPTION [ls]
+\fBls\fR command lists directories content on stormy.
+.SH OPTIONS [ls]
+.TP
+\fB\-\-long\fR
+prints info in long format
+.SH EXAMPLES [ls]
+.BI stormy\ ls\ \fIdir1\ dir2\fR
+.br
+Above command list content of directories \fIdir1\fR and \fIdir2\fR on stormy.
+
+.BI stormy\ ls\ -d\ \fIdir3\fR\ --long
+.br
+Above command list content of directory \fIdir3\fR in long format.
+
+.BI stormy\ ls\ --long\ \fIdir4\fR
+.br
+Above command list content of directory \fIdir4\fR in long format.
+  
+.SH DESCRIPTION [link]
+\fBlink\fR manages link's for files on stormy.
+.SH OPTIONS [link]
+.TP
+\fB\-n=\fI\,name\/\fR, \fB\-\-name\fR=\fI\,name\/\fR
+specify package name
+.TP
+\fB\-d=\fI\,name\/\fR, \fB\-\-dir\fR=\fI\,name\/\fR
+select target location on server
+.TP
+\fB\-\-desc\fR=\fI\,'description for link'\/\fR
+add optional for created link
+.TP
+\fB\-\-smart\fR
+smart search scraps dir from file name, for example /abc/xyz/a.cpp is splitted into /abc/xyz/ directory and a.cpp filename
+.TP
+\fB\-\-remove\fR
+removes link with specified id
+.TP
+\fB\-\-removeall\fR
+removes all links for specified file
+.TP
+\fB\-\-onetimelink\fR
+makes link one time use
+.TP
+\fB\-\-list\fR 
+lists all links for given files
+.TP
+\fB\-\-long\fR 
+prints info in long format
+.SH EXAMPLES [link]
+.BI stormy\ link\ --smart\ \fIfile1\fR\ \fI/dir1/file2\fR
+.br
+Above command creates link for files \fI/file1\fR and \fI/dir1/file2\fR on stormy.
+
+.BI stormy\ link\ --name\ \fIfile3\fR\ --dir\ \fIdir2\fR\ --onetimelink\ --desc\ \fIdescription\fR
+.br
+Above command creates one time link for file \fI/dir2/file3\fR on stormy, with specified description.
+
+.BI stormy\ link\ --smart\ --list\ \fI/dir1/file1\fR
+.br
+Above command list links for file \fI/dir1/file1\fR on stormy.
+
+.BI stormy\ link\ --smart\ --list\ --long\ \fI/dir1/file1\fR
+.br
+Above command list links for file \fI/dir1/file1\fR on stormy in long format.
+
+.BI stormy\ link\ --remove\ \fIlink_id\fR
+.br
+Above command removes link with \fIlink_id\fR.
+
+.BI stormy\ link\ --removeall\ --smart\ \fIfile1\fR
+.br
+Above command removes all links for \fIfile1\fR.
+.SH CONFIG [link]
+\fBuse_smart_search\fR always toggle on smart flag.
+
+.SH DESCRIPTION [remove]
+\fBremove\fR command removes files on server.
+.SH OPTIONS [remove]
+.TP
+\fB\-n=\fI\,name\/\fR, \fB\-\-name\fR=\fI\,name\/\fR
+specify package name
+.TP
+\fB\-d=\fI\,name\/\fR, \fB\-\-dir\fR=\fI\,name\/\fR
+select target location on server
+.TP
+\fB\-\-removedir\fR
+removes directories instead of files see examples for explanation
+.TP
+\fB\-\-smart\fR
+smart search scraps dir from file name, for example /abc/xyz/a.cpp is splitted into /abc/xyz/ directory and a.cpp filename
+.SH EXAMPLES [remove]
+.BI stormy\ remove\ --smart\ \fIfile1\ /dir1/file1\fR
+.br
+Above command removes files \fI/file1\fR and \fI/dir1/file1\fR from stormy.
+
+.BI stormy\ remove\ --name\ \fIfile3\fR\ -d\ \fIdir2\fR
+.br
+Above command removes file /dir2/file3 from stormy.
+
+.BI stormy\ remove\ --removedir\ -d\ \fI/dir1/dir2\fR
+.br
+Above command removes files \fI/dir1/dir2/\fR* from stormy and directory \fI/dir1/dir2\fR, \fIdir2\fR cannot have subdirectories (this function is not recursive).
+
+.BI stormy\ remove\ --removedir\ \fI/dir1/dir2\fR
+.br
+Above command removes files \fI/dir1/dir2/\fR* from stormy and directory \fI/dir1/dir2\fR, \fIdir2\fR cannot have subdirectories (this function is not recursive).
+
+.SH CONFIG [remove]
+\fBuse_smart_search\fR always toggle on smart flag.
+
+.SH DESCRIPTION [stat]
+\fBstat\fR command prints info about file.
+.SH OPTIONS [stat]
+.TP
+\fB\-n=\fI\,name\/\fR, \fB\-\-name\fR=\fI\,name\/\fR
+specify package name
+.TP
+\fB\-d=\fI\,name\/\fR, \fB\-\-dir\fR=\fI\,name\/\fR
+select target location on server
+.TP
+\fB\-\-long\fR
+prints info in long format
+.SH EXAMPLES [stat]
+.BI stormy\ stat\ --smart\ \fIfile1\ dir1/file2\fR
+.br
+Above command describes \fIfile1\fR and \fI/dir1/file2\fR.
+.SH CONFIG [stat]
+\fBuse_smart_search\fR always toggle on smart flag.
+.SH INSTALLATION
+Fill config file, add file containing \fBstormy\fR to path or proper alias to \fB.bashrc\fR and set proper \fBstormy_cli_dir\fR. 
+.SH DEPENDENCIES
+zip(1), python3(1), unzip(1), wget(1), basename(1), dirname(1), python3(1):requests.
+.SH SEE ALSO
+zip(1), python3(1), unzip(1), wget(1), git(1), node(1).
+.SH AUTHOR
+Marcel Szelwiga (szelwigamarcel@gmail.com)
+.br
+https://github.com/Szelwiga/stormy
