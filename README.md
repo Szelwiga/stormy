@@ -39,6 +39,7 @@ Installation:
 
 ### Stormy Linker:
 Page that redirects to current API ip, with script that updates this ip (in case of github pages hosting).
+> Needs to be finished, but it's working
 
 ### Stormy update_ip
 
