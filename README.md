@@ -22,7 +22,8 @@ Some of the features:
 	man ./stormy.man # full manual for stormy CLI
 ```
 Installation:
-* Just write ```./install.sh /target/location/of/stormy``` 
+* Make installer runable ```chmod +x install.sh```
+* Install to choosen location ```./install.sh /target/location/of/stormy``` 
 * Set up file ```~/.config/stormy/config``` 
 
 ### Stormy API
