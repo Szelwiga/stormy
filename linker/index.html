@@ -1,0 +1,43 @@
+<html>
+	<head>
+	</head>
+	<body>
+		<center>
+			<div id="div"></div>
+			<input type="text" value="Hello World" id="inp">
+			<button onclick="copyText()">Copy text</button>
+		</center>
+	</body>
+</html>
+<script src="a.js"></script>
+<script>
+	var url = window.location.href.split('?')[1];
+
+	if (!url){
+		document.getElementById('inp').value = "https://" + ip + ":FILL_PORT";
+		document.location.href = "https://" + ip + ":FILL_PORT" + "/";
+	} else {
+		if (url.split('=')[0]=='downloadbylink') {
+			document.getElementById('inp').value = "http://" + ip + ":FILL_PORT" + "/" + url;
+			document.getElementById('div').innerHTML = "The download will begin soon.";
+			document.location.href = "https://" + ip + ":FILL_PORT" + "/" + url;
+		} else {
+			document.getElementById('inp').value = "https://" + ip + ":FILL_PORT";
+			document.location.href = "https://" + ip + ":FILL_PORT" + "/";
+		}
+	}
+	function copyText() {
+		// Get the text field
+		var copyText = document.getElementById("inp");
+
+		// Select the text field
+		copyText.select();
+		copyText.setSelectionRange(0, 99999); // For mobile devices
+
+		// Copy the text inside the text field
+		navigator.clipboard.writeText(copyText.value);
+
+		// Alert the copied text
+		//alert("Copied the text: " + copyText.value);
+	}
+</script>
