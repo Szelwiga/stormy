@@ -375,7 +375,10 @@ https.createServer(config.options, function (req, res) {
 										removed_files += delete_result.deletedCount;
 										removed_links += delete_links.deletedCount;
 									}
-									var delete_result = await dir_collection.deleteOne(find_dir);
+									if (find_dir['dir'] != '/')
+										delete_result = await dir_collection.deleteOne(find_dir);
+									else
+										delete_result = {deletedCount: 0};
 									res.write("Removed " + removed_files + " files/packages, " + removed_links + " links and " + delete_result.deletedCount + " directory.\n0");
 									res.end();
 								} else {
