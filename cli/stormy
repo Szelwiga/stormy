@@ -260,7 +260,10 @@ function download_file(){
 		echo $I
 		exit 1
 	fi
+	
 
+	B=$(echo $A | awk -F '?' '{print $2}')
+	A=$(echo $B)
 	B=$(echo $A | sed s/downloadbylink=//)
 	wget https://${stormy_server_ip}:${stormy_server_api_port}/${A} -O /tmp/to_deploy --no-check-certificate
 
