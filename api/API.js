@@ -379,7 +379,7 @@ https.createServer(config.options, function (req, res) {
 									res.write("Removed " + removed_files + " files/packages, " + removed_links + " links and " + delete_result.deletedCount + " directory.\n0");
 									res.end();
 								} else {
-									res.write("Dir: " + full_path + " has subdir: " + find_subdir['name'] + " \n1");
+									res.write("Dir: " + full_path + " has subdir: " + find_subdir['dir'] + " \n1");
 									res.end();
 								}
 							} else {
