@@ -168,17 +168,29 @@ https.createServer(config.options, function (req, res) {
 							for (var i=0; i<bytes.length; i+=2) {
 								b[i/2] = parseInt(bytes[i]+bytes[i+1], 16);
 							}
-							fs.writeFile(config.stormy_directory + "incoming_files/" + find_user["name"], b, "binary", function(err) {
-								if(err) {
-									console.log(err);
-									res.write("Failed to save file on server!\n1");
-									res.end();
-								} else {
-									console.log("The file was saved!");
-									res.write('Upload completed successfully!\n0');
-								 	res.end();
-								}
-							});
+							if (fields['append']) {
+								fs.appendFile(config.stormy_directory + "incoming_files/" + find_user["name"], b, "binary", function(err) {
+									if(err) {
+										console.log(err);
+										res.write("Failed to save file on server!\n1");
+										res.end();
+									} else {
+										res.write('OK\n0');
+									 	res.end();
+									}
+								});
+							} else {
+								fs.writeFile(config.stormy_directory + "incoming_files/" + find_user["name"], b, "binary", function(err) {
+									if(err) {
+										console.log(err);
+										res.write("Failed to save file on server!\n1");
+										res.end();
+									} else {
+										res.write('Upload completed successfully!\n0');
+									 	res.end();
+									}
+								});
+							}
 
 						} else if (req.url == '/deployfile') {
 							if (!fs.existsSync(config.stormy_directory + "incoming_files/" + find_user["name"])) {
