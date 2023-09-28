@@ -40,7 +40,7 @@ if len(A) <= chunk_size:
 else:
 	chunk_cnt = math.ceil(len(A)/chunk_size)
 	print("Uploading file in " + str(chunk_cnt) + " chunks.")
-	print("Progress " + str(0) + "/" + str(chunk_cnt) + " - (" + str(round((100)/chunk_cnt)) + "%)", end='\r')
+	print("Progress " + str(0) + "/" + str(chunk_cnt) + " - (" + str(round((0)/chunk_cnt)) + "%)", end='\r')
 	for i in range(chunk_cnt):
 		low = i * chunk_size
 		high = min((i+1) * chunk_size, len(A))
