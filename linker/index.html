@@ -26,8 +26,8 @@
 		go();
 	} else {
 		if (url.split('=')[0]=='downloadbylink') {
-			document.getElementById('inp').value = "http://" + ip + ":2003" + "/" + url;
-			document.getElementById('div').innerHTML = "The download will begin soon.";
+			document.getElementById('inp').value = "https://" + ip + ":2003" + "/" + url;
+			document.getElementById('div').innerHTML = "The download will begin soon, if it doesn't copy below link.";
 			document.location.href = "https://" + ip + ":2003" + "/" + url;
 		} else {
 			go();
