@@ -149,7 +149,7 @@ https.createServer(config.options, function (req, res) {
 						}
 					}
 				} else {
-					res.write("Incorrect link!");
+					res.write(config.incorrect_link_redirect);
 					res.end();
 				}
 			} else {
