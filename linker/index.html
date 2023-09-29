@@ -1,43 +1,42 @@
 <html>
 	<head>
+		<link rel="stylesheet" href="style.css"
 	</head>
 	<body>
 		<center>
 			<div id="div"></div>
-			<input type="text" value="Hello World" id="inp">
-			<button onclick="copyText()">Copy text</button>
+			<br>
+			<br>
+			<div id="center">
+				<input type="text" value="Egg" id="inp">
+				<button onclick="copyText()" id="button">Copy</button>
+			</div>
 		</center>
 	</body>
 </html>
 <script src="a.js"></script>
 <script>
 	var url = window.location.href.split('?')[1];
-
+	function go(){
+		document.getElementById('div').innerHTML = "Redirect should happend soon, if it doesn't copy below link.";
+		document.getElementById('inp').value = "https://" + ip + ":2003";
+		document.location.href = "https://" + ip + ":2003" + "/";
+	}
 	if (!url){
-		document.getElementById('inp').value = "https://" + ip + ":FILL_PORT";
-		document.location.href = "https://" + ip + ":FILL_PORT" + "/";
+		go();
 	} else {
 		if (url.split('=')[0]=='downloadbylink') {
-			document.getElementById('inp').value = "http://" + ip + ":FILL_PORT" + "/" + url;
+			document.getElementById('inp').value = "http://" + ip + ":2003" + "/" + url;
 			document.getElementById('div').innerHTML = "The download will begin soon.";
-			document.location.href = "https://" + ip + ":FILL_PORT" + "/" + url;
+			document.location.href = "https://" + ip + ":2003" + "/" + url;
 		} else {
-			document.getElementById('inp').value = "https://" + ip + ":FILL_PORT";
-			document.location.href = "https://" + ip + ":FILL_PORT" + "/";
+			go();
 		}
 	}
 	function copyText() {
-		// Get the text field
 		var copyText = document.getElementById("inp");
-
-		// Select the text field
 		copyText.select();
-		copyText.setSelectionRange(0, 99999); // For mobile devices
-
-		// Copy the text inside the text field
+		copyText.setSelectionRange(0, 99999);
 		navigator.clipboard.writeText(copyText.value);
-
-		// Alert the copied text
-		//alert("Copied the text: " + copyText.value);
 	}
 </script>

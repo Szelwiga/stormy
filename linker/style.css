@@ -1,0 +1,70 @@
+body {
+	background-color: #000000;
+	color: #FFFFFF;
+	font-size: 18px;
+	font-family: monospace;
+}
+#center {
+	/*border: solid 3px;
+	border-color: rgb(250, 214, 8);
+	box-shadow: 0px 0px 5px 5px rgba(250, 214, 8, 1);
+	border-radius: 5px;*/
+	border-bottom: 2px solid;
+	border-radius: 4px;
+	//box-shadow: 0px 4px 3px 3px rgba(250, 214, 8, 0.4);
+	border-color: rgb(250, 214, 8);
+	padding: 2px;
+	position: absolute;
+	top: 30%;
+	right: 50%;
+	transform: translateY(-50%);
+	transform: translateX(50%);
+}
+#div {
+	border: solid 3px;
+	border-color: rgb(250, 214, 8);
+	border-radius: 5px;
+	box-shadow: 0px 0px 5px 5px rgba(250, 214, 8, 0.8);
+	padding: 10px;
+	position: absolute;
+	top: 20%;
+	right: 50%;
+	transform: translateY(-50%);
+	transform: translateX(50%);
+}
+#div::before{
+	content: "";
+	position: absolute;
+	background: rgba(250, 214, 8);
+	top: 110%;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	transform: perspective(4em) rotateX(60deg) scale(1, 0.35);
+	filter: blur(2em);
+}
+#center::before{
+	content: "";
+	position: absolute;
+	background: rgba(250, 214, 8);
+	top: 90%;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	transform: perspective(3em) rotateX(60deg) scale(1, 0.35);
+	filter: blur(2em);
+}
+#inp{
+	font-size: 16px;
+	border: none;
+	background: #000000;
+	color: #ffffff;
+	font-family: monospace;
+	width: 230px;
+}
+#button{
+	border: none;
+	font-size: 16px;
+	background-color: #000000;
+	color: #ffffff;
+}
