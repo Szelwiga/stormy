@@ -7,8 +7,8 @@
 #### Stormy git contains following subsections:
 * Stormy CLI - Command line tool used as overlay for API, written in bash + python for API requests
 * Stormy API - Online drive API written in nodejs
-* Stormy linker - Small static website that redirects to changed ip
-* Stormy update_ip - Systemd daemon + script that notify about ip changes
+* Stormy linker - Small static website that redirects to current API ip
+* Stormy update_ip - Systemd daemon that checks whether ip has changed + script that notify with email about those changes
 > Stormy online - Planned to make online version to browse uploaded files in web
 
 ### Stormy CLI
