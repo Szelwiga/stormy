@@ -77,10 +77,11 @@ async function longFileDesc(file){
 	ret += "      Location:      " + file['location'] + "\n";
 	ret += "      Type:          " + (file['is_archive'] ? "package" : "simple file") + "\n";
 	ret += "      Encryption:    ";
-	if (file['enctyption'])			ret += "password\n";
-	if (file['auto_enctyption'])	ret += "auto encryption\n";
+	if (file['encryption'])			ret += "password\n";
+	if (file['auto_encryption'])	ret += "auto encryption\n";
 	if (ret[ret.length-1] == ' ')	ret += "none\n";
 	ret += "      Uploaded from: " + file['from'] + "\n";
+	ret += "      Exact type:    " + file['type'] + "\n";
 	ret += "      Uploaded at:   " + new Date(file['time']).toLocaleString('sv') + "\n";
 	return ret;
 }
@@ -95,6 +96,12 @@ function execShellCommand(cmd) {
 		resolve(stdout? stdout : stderr);
 		});
 	});
+}
+async function fileType(path){
+	var ret = await execShellCommand('file ' + path);
+	ret = ret.split(":")[1];
+	ret = ret.substr(1, ret.length);
+	return ret.split("\n")[0];
 }
 
 https.createServer(config.options, function (req, res) {
@@ -208,14 +215,15 @@ https.createServer(config.options, function (req, res) {
 							var file_entry = {
 								real_file_name: fields['file_name'][0].replaceAll('/', 'wrrrr'),
 								server_file_name: crypto.randomBytes(32).toString('hex'),
-								auto_enctyption: parseInt(fields['auto_encryption'][0], 10),
-								enctyption: parseInt(fields['encryption'][0], 10),
+								auto_encryption: parseInt(fields['auto_encryption'][0], 10),
+								encryption: parseInt(fields['encryption'][0], 10),
 								is_archive: parseInt(fields['is_archive'][0], 10),
 								desc: fields['desc'][0],
 								from: fields['device'][0],
 								location: find_dir['dir'],
 								owner: find_user['name'],
 								weight: fs.statSync(config.stormy_directory + "incoming_files/" + find_user["name"]).size,
+								type: await fileType(config.stormy_directory + "incoming_files/" + find_user["name"]),
 								time: Date.now()
 							};
 							fs.rename(config.stormy_directory + "incoming_files/" + find_user['name'], config.stormy_directory + "storage/" + find_user["dir"] + "/" + file_entry["server_file_name"], function (err) {
@@ -282,8 +290,8 @@ https.createServer(config.options, function (req, res) {
 									var info="";
 									info += find_file['real_file_name'] + "/";
 									info += find_file['is_archive'] ? "package" : "file";
-									if (find_file['enctyption'])		info += "/pass";
-									if (find_file['auto_enctyption'])	info += "/auto";
+									if (find_file['encryption'])		info += "/pass";
+									if (find_file['auto_encryption'])	info += "/auto";
 									res.write(info + "\n0");
 								} else {
 									res.write("File: " + fields['file_name'][0] + " located at " + full_path + " does not exist.\n1");
