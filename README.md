@@ -51,5 +51,5 @@ Installation:
 * Create daemon with ```update_ip.service```
 
 ### Planned TODO:
-* Create stormy online and beautify linker
+* Create stormy online
 * Documentation for API
