@@ -17,14 +17,15 @@ T = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", 
 #print("Preparing file to upload.")
 
 with open(sys.argv[1], 'rb') as f:
+	arr = []
 	while 1:
 		byte_s = f.read(1)
 		if not byte_s:
 			break
 		byte = byte_s[0]
-		A += T[byte//16]
-		A += T[byte%16]
-
+		arr.append(T[byte//16])
+		arr.append(T[byte%16])
+	A = A.join(arr)
 chunk_current = 0
 chunk_size = 4000000
 if len(A) <= chunk_size:
@@ -40,7 +41,7 @@ if len(A) <= chunk_size:
 else:
 	chunk_cnt = math.ceil(len(A)/chunk_size)
 	print("Uploading file in " + str(chunk_cnt) + " chunks.")
-	print("Progress " + str(0) + "/" + str(chunk_cnt) + " - (" + str(round((0)/chunk_cnt)) + "%)", end='\r')
+	print("Progress " + str(0) + "/" + str(chunk_cnt) + " - (" + str(round((100)/chunk_cnt)) + "%)", end='\r')
 	for i in range(chunk_cnt):
 		low = i * chunk_size
 		high = min((i+1) * chunk_size, len(A))
