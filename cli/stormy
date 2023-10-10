@@ -116,11 +116,15 @@ fi
 ## Update_ip ##
 
 if [ $command == "'update_ip'" ]; then
-	cat ${stormy_cli_dir}config | grep ^stormy_server_ip -v > /tmp/config
+	if [ ! -e ~/.config/stormy/config ]; then
+		echo "Config file (~/.config/stormy/config) not detected!"
+		exit 1
+	fi
+	cat ~/.config/stormy/config | grep ^stormy_server_ip -v > /tmp/config
 	wget $ip_provider -O /tmp/a.js 2> /dev/null
 	echo -n "stormy_server_" >> /tmp/config
 	cat /tmp/a.js >> /tmp/config
-	cat /tmp/config > ${stormy_cli_dir}config
+	cat /tmp/config > ~/.config/stormy/config
 	echo "Updated ip to: $(cat /tmp/a.js | awk -F '=' '{print $2}' | sed s/\"//g)"
 	rm /tmp/config
 	rm /tmp/a.js
